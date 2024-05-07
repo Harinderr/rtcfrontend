@@ -29,38 +29,28 @@ export default function Signup() {
          }
     }
     return (
-        // <div className="login_form h-fit py-8">
+
+       
+        <div className="flex justify-center   bg-blue-100">
             
-        //     <div className="wrapper rounded-lg py-8 flex flex-col px-4 gap-4 w-1/2 mx-auto bg-slate-800 ">
-        //     <div className="title text-center text-xl text-white font-semibold">Register </div>
-        //       <label className="text-white font-semibold" htmlFor="name">Name</label>  <input className="p-3" type="name" onChange={(e)=> handleChange(e)} name="name" placeholder="Enter your name..." />
-        //     <label className="text-white font-semibold" htmlFor="email">Email</label>    <input className="p-3"  type="email" onChange={(e)=> handleChange(e)} name="email" placeholder="Enter your email..." />
-        //     <label className="text-white font-semibold" htmlFor="password">Password</label>    <input className="p-3"  type="password" onChange={(e)=> handleChange(e)} name="password" placeholder="Enter your password..." />
-        //         <button onClick={(e)=> handleSubmit(e)} className="w-full p-3 bg-slate-600 text-white">Submit</button>
-        //    <div onClick={()=> signIn('google')} className="login w-full  p-3 font-medium text-xl text-center bg-slate-600 hover:bg-slate-500 text-white rounded-sm">
-        //     Sign in with Google
-        //    </div>
-        //    </div>
-        // </div>
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="bg-white p-10 rounded-lg shadow-md w-1/2 h-auto">
-            <div className="text-2xl font-bold text-gray-800 mb-4 text-center">Register</div>
-            <form className="space-y-4">
+        <div  className=" p-10 rounded-lg shadow-2xl mt-8 w-2/5 mb-10  h-auto">
+            <div className="text-2xl  font-bold text-gray-800 mb-4 text-center">Register</div>
+            <form className="space-y-6">
                 <div>
-                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                    <label htmlFor="username" className="block text-sm font-medium text-grey-700">Username</label>
                     <input 
                         type="username" 
                         id="username" 
                         name="username" 
                         autoComplete="username" 
                         required 
-                        className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-6 py-4 bg-gray-200" 
+                        className="mt-1  focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md px-6 py-4 bg-gray-200" 
                         onChange={(e) => handleChange(e)} 
                         placeholder="Enter your username..." 
                     />
                 </div>
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-grey-700">Email</label>
                     <input 
                         type="email" 
                         id="email" 
@@ -73,7 +63,7 @@ export default function Signup() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                    <label htmlFor="password" className="block text-sm font-medium text-grey-700">Password</label>
                     <input 
                         type="password" 
                         id="password" 
@@ -85,14 +75,19 @@ export default function Signup() {
                         placeholder="Enter your password..." 
                     />
                 </div>
-                <button type="submit" className="block w-full bg-blue-500 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-600" onClick={(e) => handleSubmit(e)}>Sign In</button>
+                <button type="submit" className="block  w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-600" onClick={(e) => handleSubmit(e)}>Sign Up </button>
             </form>
-            <div className="text-center mt-4">
+            {/* /* <div className="text-center mt-4">
                 <span className="text-gray-600">OR</span>
-            </div>
-            <div onClick={() => signIn('google')} className="block text-center w-full bg-blue-600 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-700 cursor-pointer mt-2">
-                Sign in with Google
-            </div>
+            </div> */}
+           
+        </div>
+        <div style={{backgroundImage: "url('/nt.jpg')"}} className="register_right  w-2/5  mt-8 mb-10 py-16 px-10">
+            <h1 className="text-5xl font-bold px-8  leading-snug text-white text-center">Welcome to SignUp</h1>
+            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences</p>
+            <div onClick={() => signIn('google')} className="block mt-16 text-center w-full bg-white text-black font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-black hover:text-white cursor-pointer ">
+                Sign up with Google
+            </div> 
         </div>
     </div>
     

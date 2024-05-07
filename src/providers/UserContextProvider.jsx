@@ -10,23 +10,26 @@ export default function UserContextProvider({children}) {
     const [name, setName] = useState('');
     const [authenticated, setAuthenticated] = useState(false)
     
-    const profile = async () => {
-        const response = await axios.get('/user')
-        // console.log(response)
-        setName(response.data.username)
-        setId(response.data.userid)
-        if(response.data.username){
-            setAuthenticated(true)
+ 
+   
+    useEffect( ()=> {
+        const profile = async () => {
+            const response = await axios.get('/user')
+            // console.log(response)
+            setName(response.data.username)
+            setId(response.data.userid)
+            if(response.data.username){
+                setAuthenticated(true)
+            }
         }
-    }
-    useEffect(()=> {
-        
+    
    profile()
+   
    
     },[id,name])
   
     return (
-        <userContext.Provider value={{setId,id, name,setName}}>
+        <userContext.Provider value={{setId,id, name,setName,authenticated}}>
             {children}
         </userContext.Provider>
     )

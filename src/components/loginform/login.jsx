@@ -23,7 +23,7 @@ export default function LogIn() {
                 console.log(response);
                 setId(response.data.userid);
                 setName(response.data.username);
-                router.push('/');
+                router.push('/user/chat');
             } else {
                 console.log('error in fetching data');
             }
@@ -33,12 +33,14 @@ export default function LogIn() {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="bg-white p-10 rounded-lg shadow-md w-2/4 h-auto">
-            <div className="text-2xl font-bold text-gray-800 mb-4 text-center">Sign In</div>
-            <form className="space-y-4">
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+       
+        <div className="flex justify-center   bg-blue-100">
+            
+        <div  className=" p-10 rounded-lg shadow-2xl mt-8 w-2/5 mb-10  h-auto">
+            <div className="text-2xl  font-bold text-gray-800 mb-4 text-center">Login</div>
+            <form className="space-y-6">
+                 <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-grey-700">Email</label>
                     <input 
                         type="email" 
                         id="email" 
@@ -51,7 +53,7 @@ export default function LogIn() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                    <label htmlFor="password" className="block text-sm font-medium text-grey-700">Password</label>
                     <input 
                         type="password" 
                         id="password" 
@@ -63,14 +65,20 @@ export default function LogIn() {
                         placeholder="Enter your password..." 
                     />
                 </div>
-                <button type="submit" className="block w-full bg-gradient-to-r from-blue-900 to-purple-800 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-600" onClick={(e) => handleSubmit(e)}>Sign In</button>
+                <button type="submit" className="block  w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out  hover:bg-white hover:text-black" onClick={(e) => handleSubmit(e)}>Sign In </button>
             </form>
-            <div className="text-center mt-4">
+             <div className="text-center mt-4">
                 <span className="text-gray-600">OR</span>
             </div>
-            <div onClick={() => signIn('google')} className="block text-center w-full bg-gradient-to-r from-blue-900 to-purple-800 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-700 cursor-pointer mt-2">
-                Sign in with Google
-            </div>
+             <div onClick={() => signIn('google')} className="block mt-4 text-center w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-white hover:text-black cursor-pointer ">
+                Sign In with Google
+            </div> 
+           
+        </div>
+        <div style={{backgroundImage: "url('/nt.jpg')"}} className="register_right  w-2/5  mt-8 mb-10 py-24 px-10">
+            <h1 className="text-5xl font-bold  leading-snug text-white text-center">Welcome back to SignIn</h1>
+            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences</p>
+           
         </div>
     </div>
     

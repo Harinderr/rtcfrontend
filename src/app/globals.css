@@ -35,3 +35,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #404040; 
 }
+
+
+.home_wrapper {
+  height: calc(100vh - 63px);
+}
+
