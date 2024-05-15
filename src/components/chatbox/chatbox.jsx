@@ -88,7 +88,7 @@ setMessage(message + emoji)
               <div className="nouserBox h-full w-full overflow-hidden ">
                 <Image className="mx-auto  " src={'/Designer.png'} alt="no image" width={350} height={350}></Image>
               <h1 className="text-center text-4xl font-bold overflow-y-hidden">
-                Let's bring the World closer with Unite
+              Let  Bring the World closer with Unite
               </h1>
               </div>
             )}
