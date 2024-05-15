@@ -9,8 +9,3 @@
           width: 90%;
      }
 }
-@media screen and (max-width:768px) {
-     .chatbox {
-          display: none;
-     }
-}
