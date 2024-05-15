@@ -21,10 +21,11 @@ export default function Chat() {
   const [rtcMessages, setRtcmessages] = useState([])
   const chatRef = useRef(null);
   const inputRef = useRef(null);
+  const value = 2;
   
   //websocket
   function connnectToWs() {
-    const ws = new WebSocket("ws://witty-graceful-winterberry.glitch.me");
+    const ws = new WebSocket("wss://witty-graceful-winterberry.glitch.me");
 
     setWs(ws);
 
