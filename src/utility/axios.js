@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000', // Replace this with your API base URL
+  baseURL: 'https://witty-graceful-winterberry.glitch.me', // Replace this with your API base URL
   withCredentials : true,
   headers: {
     'Content-Type': 'application/json',
