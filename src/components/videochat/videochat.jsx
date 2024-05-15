@@ -10,67 +10,67 @@ export default function VideoChat({ setVideoCall ,setCallfrom ,callfrom,ws,selec
   const [text,setText] = useState('')
   const [video,setVideo] = useState(null)
 
-  // const sendStream = useCallback(async ()=> {
-  //   const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
-  //   localVideoRef.current.srcObject = stream;
-  //   for (const track of stream.getTracks()){
-  //     console.log('added tracks')
-  //     connection.addTrack(track,stream)
-  //     console.log(track)
-  //   }
+  const sendStream = useCallback(async ()=> {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
+    localVideoRef.current.srcObject = stream;
+    for (const track of stream.getTracks()){
+      console.log('added tracks')
+      connection.addTrack(track,stream)
+      console.log(track)
+    }
     
-  // },[])
+  },[])
 
-  // console.log(connection)
-//   const handleNego = useCallback(async()=> {
-//     const offer =  await createOffer()
-//     ws.send(JSON.stringify({
-//           type: "offer",
-//           offer: offer,
-//           userTo: selected
-//     }))
-//   },[])
+  console.log(connection)
+  const handleNego = useCallback(async()=> {
+    const offer =  await createOffer()
+    ws.send(JSON.stringify({
+          type: "offer",
+          offer: offer,
+          userTo: selected
+    }))
+  },[])
 
-//   useEffect(()=> {
-//     connection.addEventListener('negotiationneeded',handleNego)
-//   },[connection])
+  useEffect(()=> {
+    connection.addEventListener('negotiationneeded',handleNego)
+  },[connection])
 
 
-// useEffect(() => {
-//   const streamData = async () => {
-//     const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
-//     localVideoRef.current.srcObject = stream;
-//     setVideo(stream)
-//     for (const track of stream.getTracks()){
-//       console.log('added tracks')
-//       connection.addTrack(track,stream)
-//       console.log(track)
-//   }
+useEffect(() => {
+  const streamData = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
+    localVideoRef.current.srcObject = stream;
+    setVideo(stream)
+    for (const track of stream.getTracks()){
+      console.log('added tracks')
+      connection.addTrack(track,stream)
+      console.log(track)
+  }
     
-//     }
-//     connection && streamData()
-//     return () => {
-//       if (stream) {
-//         stream.getTracks().forEach(track => {
-//           track.stop(); // Stop all tracks
-//         });
-//         connection.close()
+    }
+    connection && streamData()
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => {
+          track.stop(); // Stop all tracks
+        });
+        connection.close()
         
        
-//       }
-//     }
+      }
+    }
 
     
-//   },[connection])
+  },[connection])
 
 
-//   useEffect(() => {
-//     connection.ontrack = (event) => {
-//       console.log('tracks received');
-//    console.log(event)
-//     remoteVideoRef.current.srcObject =  event.streams[0]
-//     }
-//   }, [connection]);
+  useEffect(() => {
+    connection.ontrack = (event) => {
+      console.log('tracks received');
+   console.log(event)
+    remoteVideoRef.current.srcObject =  event.streams[0]
+    }
+  }, [connection]);
  
 
   const endCall = () => {
