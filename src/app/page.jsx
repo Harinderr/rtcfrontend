@@ -14,10 +14,10 @@ import Link from "next/link"
     const router = useRouter()
   
    
-    // useEffect(()=> {
+    useEffect(()=> {
 
-    //   {id ? router.push('/user/chat') : router.push('/auth/login')}
-    // },[id])
+      {id ? router.push('/user/chat') : router.push('/auth/login')}
+    },[id])
   
     
   

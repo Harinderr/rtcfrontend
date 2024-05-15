@@ -1,82 +1,119 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { rtcContext } from "@/providers/rtcProvider";
+import { MdCallEnd } from "react-icons/md";
 
-export default function VideoChat() {
-  const [stream, setStream] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(null);
-  const remoteRef = useRef(null);
-  const localRef = useRef(null);
-  const { connection } = useContext(rtcContext);
+export default function VideoChat({ setVideoCall ,setCallfrom ,callfrom,ws,selected}) {
 
-  async function userStream() {
-  try { const localvideo = await navigator.mediaDevices.getUserMedia({video:true})
-    setStream(localvideo);
-    if (localRef.current) { // Check if localRef is available
-      localRef.current.srcObject = localvideo;
-    } else {
-      console.error("Local video element not found.");
-    }} catch(err) {
-      console.log('eror in local video', err)
+  const { connection,channel,createOffer, stream ,setConnection} = useContext(rtcContext);
+  const remoteVideoRef = useRef(null);
+  const localVideoRef = useRef(null);
+  const [text,setText] = useState('')
+  const [video,setVideo] = useState(null)
+
+  // const sendStream = useCallback(async ()=> {
+  //   const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
+  //   localVideoRef.current.srcObject = stream;
+  //   for (const track of stream.getTracks()){
+  //     console.log('added tracks')
+  //     connection.addTrack(track,stream)
+  //     console.log(track)
+  //   }
+    
+  // },[])
+
+  // console.log(connection)
+//   const handleNego = useCallback(async()=> {
+//     const offer =  await createOffer()
+//     ws.send(JSON.stringify({
+//           type: "offer",
+//           offer: offer,
+//           userTo: selected
+//     }))
+//   },[])
+
+//   useEffect(()=> {
+//     connection.addEventListener('negotiationneeded',handleNego)
+//   },[connection])
+
+
+// useEffect(() => {
+//   const streamData = async () => {
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
+//     localVideoRef.current.srcObject = stream;
+//     setVideo(stream)
+//     for (const track of stream.getTracks()){
+//       console.log('added tracks')
+//       connection.addTrack(track,stream)
+//       console.log(track)
+//   }
+    
+//     }
+//     connection && streamData()
+//     return () => {
+//       if (stream) {
+//         stream.getTracks().forEach(track => {
+//           track.stop(); // Stop all tracks
+//         });
+//         connection.close()
+        
+       
+//       }
+//     }
+
+    
+//   },[connection])
+
+
+//   useEffect(() => {
+//     connection.ontrack = (event) => {
+//       console.log('tracks received');
+//    console.log(event)
+//     remoteVideoRef.current.srcObject =  event.streams[0]
+//     }
+//   }, [connection]);
+ 
+
+  const endCall = () => {
+    setVideoCall(false);
+    setCallfrom(false);
+    
+    setVideo(null)
+  ws.send(JSON.stringify({
+        type : 'close',
+        userTo : selected
+      }))
     }
-  }
 
-  useEffect(() => {
-    userStream(); // Call the function to get user media stream
-
-    // Check if the connection state is 'connected'
-    if (connection && connection.connectionState === "connected") {
-      // Iterate over each track in the stream and add it to the connection
-      stream.getTracks().forEach((track) => {
-        connection.addTrack(track, stream);
-      });
-
-      // Set up event listener for incoming tracks
-      connection.ontrack = (event) => {
-        // Attach incoming track to a video element for display
-        const remoteVideo = remoteRef.current;
-        if (remoteVideo) {
-          setRemoteStream(event.streams[0]);
-          remoteVideo.srcObject = event.streams[0];
-        } else {
-          console.error("Remote video element not found.");
-        }
-      };
-    }
-  }, []); // Depend on connection and stream for updates
 
   return (
+     <> 
+     {/* <input type="text" name="msg" className="w-full" onChange={(e)=> setText(e.target.value)} /> */}
+      {/* <button onClick={sendStream}>Send</button> */}
     <div id="video" className="main bg-slate-700 h-full w-full relative">
       <div className="container flex flex-row w-full h-full">
-        {stream && (
+       
           <video
-            id="local"
+            id="localVideo"
             className="h-full w-1/2"
-            ref={localRef}
+            ref={localVideoRef}
             autoPlay
           />
-        )}
-        {remoteStream && (
-          <video
-            id="remote"
-            ref={remoteRef}
-            className="h-full w-1/2"
-            autoPlay
-          />
-        )}
+       
+        <video
+          id="remoteVideo"
+          className="h-full w-1/2"
+          ref={remoteVideoRef}
+          autoPlay
+        />
       </div>
       <div className="controls w-full absolute bottom-6 ">
         <div className="button_wrapper w-1/3 mx-auto flex flex-row justify-around">
-          <div className="button p-4 h-16 w-16 rounded-full video bg-red-600">
-            v
-          </div>
-          <div className="button w-16 h-16 rounded-full p-4 audio bg-red-600">
-            a
-          </div>
-          <div className="button w-16 h-16 rounded-full p-4 end_call bg-red-500">
-            end
-          </div>
+          <div className="button p-4 h-16 w-16 rounded-full video bg-red-600">v</div>
+          <div className="button w-16 h-16 rounded-full p-4 audio bg-red-600">a</div>
+          <div className="button w-16 h-16 rounded-full p-4 end_call bg-red-500 cursor-pointer" onClick={endCall}><MdCallEnd /></div>
         </div>
       </div>
     </div>
+    </>
   );
 }

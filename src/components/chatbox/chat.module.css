@@ -3,3 +3,14 @@
      height:  calc(100vh - 76px);
      
 }
+
+@media screen and (max-width:981px) {
+     .chat_input {
+          width: 90%;
+     }
+}
+@media screen and (max-width:768px) {
+     .chatbox {
+          display: none;
+     }
+}

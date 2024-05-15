@@ -2,3 +2,16 @@
 .people_bar {
     height: calc(100vh - 76px);
 }
+
+@media screen and (max-width:981px) {
+   
+    .people_bar {
+        width: 20rem;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .people_bar {
+         width: 100%;
+    }
+}

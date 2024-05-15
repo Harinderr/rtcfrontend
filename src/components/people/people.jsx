@@ -8,7 +8,19 @@ import axios  from "@/utility/axios";
 export default function People({ onlinePeople , setSelected ,selected}) {
     const {id}= useContext(userContext)
     const [friends, setFriends] = useState([])
-   
+    const [store, setStore] = useState([])
+    
+                
+   function handleChange(e) {
+    let val = (e.target.value).toLowerCase()
+   if(val.length == 0) {
+    setFriends(store)
+    return
+   }
+ 
+    let filterlist = store.filter(v => v.username.toLowerCase().startsWith(val))
+    setFriends(filterlist)
+   }
  
     useEffect(()=> {
    
@@ -17,7 +29,11 @@ export default function People({ onlinePeople , setSelected ,selected}) {
          const getfriends = async () => {
             try {
                 const res = await axios.post('/friends',{userid : id})
-               setFriends(res.data)
+             console.log(res.data)
+                 setFriends(res.data)
+                 setStore(res.data)
+               
+               
             }catch(err){
                 console.log('cant get friends data from db',err)
             }
@@ -41,8 +57,10 @@ let v = 1;
             <div className="w-full flex flex-row rounded-full">
                 <input 
                     type="text" 
+                    name="search"
                     className="w-3/4 px-4 py-3 bg-gradient-to-r from-slate-600  to-slate-500 text-black focus:outline-none focus:ring focus:bg-slate-100 focus:border-blue-500 rounded-l-xl" 
                     placeholder="Search friends..."
+                    onChange={(e)=> handleChange(e)}
                     required 
                 />
                 <button 
@@ -54,32 +72,31 @@ let v = 1;
         </div>
         {/* <div className="font-bold mb-4 ml-4">Contacts</div> */}
         <ul>
-            {/* {onlinePeople.size &&
-                [...onlinePeople].map(([key, value]) => { */}
+           
                   {
                     friends.map((val,index)=> {
                         return (
                             <li
                                 key={v++}
                                 onClick={() => {
-                                    setSelected(val.friendId)
+                                    setSelected(val.userid)
                                     
                                 }}
-                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:opacity-80 ${selected == val.friendId ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
+                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:opacity-80 ${selected == val.userid ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
                             >
                                 <img
                                     src="https://via.placeholder.com/30"
                                     alt="User Profile"
                                     className="w-8 h-8 rounded-full mr-2"
                                 />
-                                <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                                <span className="font-semibold text-lg">{val.friendName}</span>
+                                <span className={`inline-block w-2 h-2 ${onlinePeople.has(val.userid) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
+                                <span className="font-semibold text-lg">{val.username}</span>
                                {/* { lastmsg.length > 0 && <span>{lastmsg[0].des}</span>} */}
                             </li>
                         )
                     })
                   }
-                {/* })} */}
+                
         </ul>
     </div>
 </div>

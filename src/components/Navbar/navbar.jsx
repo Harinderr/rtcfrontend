@@ -12,10 +12,10 @@ export default function Navbar() {
     const router = useRouter()
 
     return (
-        <div className="wrapper w-full shadow-md bg-slate-800 flex flex-row justify-between px-20 py-4">
+        <div className="wrapper w-full shadow-md bg-slate-800 flex flex-row justify-between px-20 py-2">
         <div className="flex items-center">
-          <img src="/logo.png" alt="Logo" className="h-10 w-10 mr-2" />
-          <div className= {`${styles.brand_name} text-white text-lg font-bold`}>Messenger</div>
+          <img src="/Designer.png" alt="Logo" className="h-14 w-14 mr-2" />
+          <div className= {`${styles.brand_name} text-white text-lg font-bold`}>Unite</div>
         </div>
         <div className="wrapper_right flex items-center">
           <Link href={'/addpeople'} className='py-2 px-4 rounded-md text-white border-solid border-2 border-white hover:bg-white hover:text-blue-900'>Add</Link>

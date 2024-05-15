@@ -14,27 +14,14 @@ export default function Chat() {
   const { id, name } = useContext(userContext);
   const [onlinePeople, setOnlinePeople] = useState(new Map());
   const [selected, setSelected] = useState("");
-  
-  
-  const [callfrom, setCallfrom] = useState(false);
+   const [callfrom, setCallfrom] = useState(false);
   const [callTo, setCallTo] = useState(false);
-  // const [lastmsg, setLastmsg]  = useState(null)
-  // const [connection,updateConnection] = useState(null)
-  // const [channel, updateChannel] = useState(null)
-  const {connection,channel,updateChannel,setConnection}= useContext(rtcContext);
-  // const {iceCdt,setIceCdt} = useState([])
+   const {connection,channel,updateChannel,setConnection,createOffer,createAnswer}= useContext(rtcContext);
   const [messages, setMessages] = useState([]);
   const [rtcMessages, setRtcmessages] = useState([])
   const chatRef = useRef(null);
   const inputRef = useRef(null);
-  const iceCandidatesStore  = [];
   
-  
-
-
- 
-  
-
   //websocket
   function connnectToWs() {
     const ws = new WebSocket("ws://localhost:5000");
@@ -52,7 +39,7 @@ export default function Chat() {
     ws.onmessage = async (e) => {
       let data = JSON.parse(e.data);
      
-      if ("online" in data) {
+      if (data.online) {
         handleOnlineUserData(data, id)
           .then((val) => setOnlinePeople(val))
           .catch((err) => console.log("There is an error" + err));
@@ -100,57 +87,36 @@ export default function Chat() {
     }
   };
 
-  const videoChatTo = () => {
-     
-  
-    try  {
-      let localconnection = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      });
+  const videoChatTo = async () => {
+     try  {
+      const dataChannel = connection.createDataChannel("chat");
 
-      
+    dataChannel.onopen = () => console.log("connnection open");
+    dataChannel.onmessage = (e) => console.log("ready to message" + e.data);
 
-     
-      const dataChannel = localconnection.createDataChannel("chat");
- 
-       dataChannel.onopen = () => console.log("connnection open");
-       dataChannel.onmessage = (e) => console.log("ready to message" + e.data);
- 
-       dataChannel.onerror = (err) => console.log("error in channel creation",err);
- 
-       updateChannel(dataChannel);
-      console.log(localconnection)
-        
+    dataChannel.onerror = (err) => console.log("error in channel creation", err);
+
+    updateChannel(dataChannel);
     
-       localconnection
-         .createOffer()
-         .then((offer) => localconnection.setLocalDescription(offer))
-         .then(() => {
-           ws.send(
-             JSON.stringify({
-               type: "offer",
-               offer: localconnection.localDescription,
-               userTo: selected,
-             })
-           );
-         })
-         .catch((err) => console.log("cant create an offer",err));
+     const offer = await createOffer()
+      ws.send(
+        JSON.stringify({
+          type: "offer",
+          offer: offer,
+          userTo: selected,
+           })
+      );
+      connection.onicecandidate = ({candidate}) => {
+        if(selected && candidate){
+          console.log('this is candidates')
+      ws.send(JSON.stringify({
+       type : 'candidate',
+       userTo : selected,
+       candidate
+      }))} 
       
-         localconnection.onicecandidate = ({candidate}) => {
-       
-       
-          if(selected && candidate){
-          ws.send(JSON.stringify({
-            type : 'candidate',
-            userTo : selected,
-            candidate
-          }))} 
-         
       }
- setConnection(localconnection)
-
-     
- } catch(err) {
+      } catch(err) {
    console.log('on video to coonection no',err)
  }
      
@@ -159,51 +125,41 @@ export default function Chat() {
    const onOffer = async ({ offer,id }) => {
      setSelected(id)
      setCallfrom(true)
-   
-
-    try {
-      let localconnection = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      });
-      localconnection.ondatachannel = (e) => {
-        let remoteChannel = e.channel;
-        remoteChannel.onopen = () => {
-          console.log("channel is ready to use");
-         
-        };
-        remoteChannel.onmessage = () => console.log("message here");
-        updateChannel(remoteChannel);
-      };;
-
      
-        await localconnection.setRemoteDescription(new RTCSessionDescription(offer))
-        const answer = await localconnection.createAnswer()
-             await  localconnection.setLocalDescription(answer)
-       
-           
-          ws.send(
+
+   try {
+
+     connection.ondatachannel = (event)=> {
+        const rdc = event.channel
+        updateChannel(rdc)
+        rdc.onopen = ()=> {
+          console.log('connection is open')
+        }
+
+        rdc.onmessage = (e) => {
+          console.log('message here',e.data)
+        }
+     }
+      const answer = await createAnswer(offer)
+         ws.send(
             JSON.stringify({
               type: "answer",
-              userTo: selected,
-              answer: localconnection.localDescription,
+              userTo: id,
+              answer: answer,
             })
           );
 
-          localconnection.onicecandidate = ({candidate}) => {
-       
-       
-            if(selected){
-            ws.send(JSON.stringify({
-              type : 'candidate',
-              userTo : selected,
-              candidate
-            }))} 
+          connection.onicecandidate = ({candidate}) => {
+            if(selected && candidate){
+              console.log('this is candidates')
+          ws.send(JSON.stringify({
+           type : 'candidate',
+           userTo : selected,
+           candidate
+          }))} 
+          
           }
-           
-
-          setConnection(localconnection)
-        
-       } catch(err) {
+         } catch(err) {
         console.log('cant create answer',err)
        }
     }
@@ -221,13 +177,20 @@ export default function Chat() {
    const onCandidates = async({ candidate }) => {
     
   try{
-   if(connection) {
+   if(connection && (candidate != null)) {
      await connection.addIceCandidate(new RTCIceCandidate(candidate))
       console.log('candidates set')}
   }
   catch(err){console.log('cant set the candidates',err)}
   };
 
+
+  const endCall = () => {
+    if(connection){
+      connection.close()
+     
+    }
+  }
 
   // messeges on load
   useEffect(() => {
@@ -295,7 +258,10 @@ export default function Chat() {
           onCandidates(data);
         }
         break;
-     
+     case "close" : {
+      console.log('connection closed')
+      endCall()
+     }break;
       default:
         {
           console.log("nothing found here");
@@ -334,6 +300,8 @@ export default function Chat() {
           
         ></People>
         <Chatbox
+        
+        setCallfrom={setCallfrom}
          videoChatTo={videoChatTo}
           handleSend={handleSend}
           selected={selected}
@@ -342,6 +310,7 @@ export default function Chat() {
           inputRef={inputRef}
           connection={connection}
           callfrom={callfrom}
+          ws = {ws}
         ></Chatbox>
       </div>
     </div>
