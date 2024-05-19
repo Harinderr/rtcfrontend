@@ -41,3 +41,11 @@
   height: calc(100vh - 63px);
 }
 
+
+.active {
+  display: block;
+}
+
+.inactive {
+  display: none;
+}

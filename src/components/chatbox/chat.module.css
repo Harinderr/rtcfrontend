@@ -9,3 +9,53 @@
           width: 90%;
      }
 }
+
+@media screen and (max-width:768px) {
+     .chatbox {
+          font-size: .8rem;
+          
+
+     }
+     .chat {
+          padding: 10px;
+     }
+     .chat_input {
+          width: 90%;
+          font-size: .8rem;
+         
+     }
+     .chat_input  input{
+          width: 52%;
+          padding: 16px;
+     }
+     .chat_input button {
+          width: 16%;
+          padding: 16px;
+     }
+     .chat_input .sendBtn {
+          width: 32%;
+     }
+     .chat_input .sendBtn  button {
+          width: 50%;
+     }
+
+     .nouserBox img {
+          height: 200px;
+          width: 200px;
+     }
+     .nouserBox h1 {
+          font-size: 1rem;
+     }
+     .wrapper_input {
+          margin-bottom: 0;
+     }
+}
+
+@media screen and (max-width:500px){
+
+
+
+}
+
+
+

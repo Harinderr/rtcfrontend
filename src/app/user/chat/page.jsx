@@ -3,14 +3,16 @@ import Image from "next/image";
 import People from "@/components/people/people";
 import { handleOnlineUserData } from "@/func/handleonlineuser";
 import Chatbox from "@/components/chatbox/chatbox";
-import {  useContext, useEffect, useRef, useState } from "react";
+import {  useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { userContext } from "@/providers/UserContextProvider";
 import axios from "@/utility/axios";
 import {  rtcContext } from "@/providers/rtcProvider";
+import { useRouter } from "next/navigation";
+
 
 export default function Chat() {
   const [ws, setWs] = useState(null);
-  
+  const router = useRouter()
   const { id, name } = useContext(userContext);
   const [onlinePeople, setOnlinePeople] = useState(new Map());
   const [selected, setSelected] = useState("");
@@ -19,13 +21,17 @@ export default function Chat() {
    const {connection,channel,updateChannel,setConnection,createOffer,createAnswer}= useContext(rtcContext);
   const [messages, setMessages] = useState([]);
   const [rtcMessages, setRtcmessages] = useState([])
+  const [callend, setCallEnd] = useState(false)
   const chatRef = useRef(null);
   const inputRef = useRef(null);
-  const value = 2;
+  const [smactive, setSmActive]= useState(false)
+  const [windowWidth, setWindowwidth] = useState(window.outerWidth)
+ 
   
+
   //websocket
   function connnectToWs() {
-    const ws = new WebSocket("wss://witty-graceful-winterberry.glitch.me");
+    const ws = new WebSocket("ws://localhost:5000");
 
     setWs(ws);
 
@@ -36,6 +42,7 @@ export default function Chat() {
     
     };
 
+    
 
     ws.onmessage = async (e) => {
       let data = JSON.parse(e.data);
@@ -186,12 +193,7 @@ export default function Chat() {
   };
 
 
-  const endCall = () => {
-    if(connection){
-      connection.close()
-     
-    }
-  }
+  
 
   // messeges on load
   useEffect(() => {
@@ -261,7 +263,8 @@ export default function Chat() {
         break;
      case "close" : {
       console.log('connection closed')
-      endCall()
+      setCallEnd(true)
+      
      }break;
       default:
         {
@@ -270,10 +273,27 @@ export default function Chat() {
         break;
     }
   },[rtcMessages])
+useEffect(()=> {
+  !id && router.push('/')
 
-//  console.log(iceCandidatesStore)
+  
+},[])
+
+
+useEffect(()=> {
+    function handleSize() {
+      let w = window.innerWidth
+      console.log(w)
+      if (w <= 500) setSmActive(true)
+
+    }
+  handleSize()
+},[])
+
+
+
   return (
-    <div className="relative">
+    <div className="relative"  >
       <div
         id="callFrom"
         className="wrapper  bg-slate-300  p-4 absolute left-1/2 transform -translate-x-1/2 hidden justify-between h-18 rounded-2xl  w-1/3 z-10 shadow-md"
@@ -293,15 +313,17 @@ export default function Chat() {
       </div>
 
       <div className="flex flex-row overflow-hidden ">
-        <People
-          onlinePeople={onlinePeople}
-          messages={messages}
-          setSelected={setSelected}
-          selected={selected}
-          
-        ></People>
+       <People
+        onlinePeople={onlinePeople}
+        messages={messages}
+        setSelected={setSelected}
+        selected={selected}
+        setSmActive={setSmActive}
+        smactive={smactive}
+      ></People>
         <Chatbox
-        
+        smactive={smactive}
+        setSmActive={setSmActive}
         setCallfrom={setCallfrom}
          videoChatTo={videoChatTo}
           handleSend={handleSend}
@@ -312,6 +334,7 @@ export default function Chat() {
           connection={connection}
           callfrom={callfrom}
           ws = {ws}
+          callend={callend}
         ></Chatbox>
       </div>
     </div>

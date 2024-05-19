@@ -5,10 +5,11 @@ import Image from "next/image";
 import styles from './people.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import axios  from "@/utility/axios";
-export default function People({ onlinePeople , setSelected ,selected}) {
+export default function People({setSmActive,smactive, onlinePeople , setSelected ,selected}) {
     const {id}= useContext(userContext)
     const [friends, setFriends] = useState([])
     const [store, setStore] = useState([])
+    const [active,setActive] = useState(false)
     
                 
    function handleChange(e) {
@@ -25,7 +26,7 @@ export default function People({ onlinePeople , setSelected ,selected}) {
     useEffect(()=> {
    
       if(id){ 
-        console.log(id)
+     
          const getfriends = async () => {
             try {
                 const res = await axios.post('/friends',{userid : id})
@@ -42,19 +43,29 @@ export default function People({ onlinePeople , setSelected ,selected}) {
         }
            
     },[id])
-//   console.log(onlinePeople)
-// console.log(friends)
+
 let v = 1;
-// if (!id) {
-//     return <div>Loading...</div>;
-//   }
-// console.log(lastmsg)
+ useEffect(()=> {
+    if(!smactive ){
+    let el = document.getElementById('pp_con')
+    if(el.classList.contains('inactive')){
+        el.classList.remove('inactive')
+    }
+    else {
+        el.classList.add('inactive')
+    }
+        
+    }
+ },[smactive])
+
+
+
   return (
-    <div className={`${styles.people_bar} w-[25rem] h-full  text-white bg-gradient-to-r from-slate-900  to-slate-800 overflow-y-auto`}>
+    <div id="pp_con" className={`${styles.people_bar} w-[25rem] h-full  text-white bg-gradient-to-r from-slate-900  to-slate-800 overflow-y-auto`}>
     <div className="">
         
-        <div className="flex items-center  px-4 py-5">
-            <div className="w-full flex flex-row rounded-full">
+        <div className={`${styles.searchWrapper} flex items-center  px-4 py-5`}>
+            <div className={`${styles.searchContainer} w-full flex flex-row rounded-full`}>
                 <input 
                     type="text" 
                     name="search"
@@ -71,7 +82,7 @@ let v = 1;
             </div>
         </div>
         {/* <div className="font-bold mb-4 ml-4">Contacts</div> */}
-        <ul>
+        <ul className={`${styles.friendsList}`}>
            
                   {
                     friends.map((val,index)=> {
@@ -81,8 +92,10 @@ let v = 1;
                                 onClick={() => {
                                     setSelected(val.userid)
                                     
+                                    
                                 }}
-                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:opacity-80 ${selected == val.userid ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
+                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
+                                
                             >
                                 <img
                                     src="https://via.placeholder.com/30"
@@ -90,8 +103,12 @@ let v = 1;
                                     className="w-8 h-8 rounded-full mr-2"
                                 />
                                 <span className={`inline-block w-2 h-2 ${onlinePeople.has(val.userid) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
-                                <span className="font-semibold text-lg">{val.username}</span>
-                               {/* { lastmsg.length > 0 && <span>{lastmsg[0].des}</span>} */}
+                              <div className="flex flex-col">
+                              <span className="font-semibold text-lg">{val.username}</span>
+                              <span className=" text-xs overflow-hidden">{val.latestMsg.length ? val.latestMsg.substring(0,20)+'...':''}</span>
+
+                                </div>  
+                               
                             </li>
                         )
                     })

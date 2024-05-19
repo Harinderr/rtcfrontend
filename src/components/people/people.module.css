@@ -10,3 +10,34 @@
     }
 }
 
+@media screen and (max-width:768px){
+
+.friendsList li  {
+   padding: 8px;
+}
+.friendsList li  img { 
+    height: 25px;
+    width: 25px;
+}
+.friendsList li span {
+    font-size: .8rem;
+}
+.searchWrapper {
+    padding: 15px;
+}
+.searchContainer input {
+    font-size: .8rem;
+padding: 8px;
+}
+
+}
+
+@media screen and (max-width:500px){
+.people_bar {
+    width: 100%;
+}
+
+
+}
+
+

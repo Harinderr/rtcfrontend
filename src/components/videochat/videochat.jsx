@@ -1,27 +1,23 @@
 import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { rtcContext } from "@/providers/rtcProvider";
 import { MdCallEnd } from "react-icons/md";
+import { FaVideo } from "react-icons/fa6";
+import { AiFillAudio } from "react-icons/ai";
 
-export default function VideoChat({ setVideoCall ,setCallfrom ,callfrom,ws,selected}) {
+export default function VideoChat({ callend,setVideoCall ,setCallfrom ,callfrom,ws,selected}) {
 
   const { connection,channel,createOffer, stream ,setConnection} = useContext(rtcContext);
   const remoteVideoRef = useRef(null);
   const localVideoRef = useRef(null);
   const [text,setText] = useState('')
   const [video,setVideo] = useState(null)
+  const [audioActive, setAudioActive] = useState(true)
+  const [videoActive, setVideoActive] = useState(true)
+  const [audioTracks, setAudioTracks] = useState(null)
+  const [videoTracks, setVideoTracks] = useState(null)
+  
 
-  const sendStream = useCallback(async ()=> {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
-    localVideoRef.current.srcObject = stream;
-    for (const track of stream.getTracks()){
-      console.log('added tracks')
-      connection.addTrack(track,stream)
-      console.log(track)
-    }
-    
-  },[])
-
-  console.log(connection)
+  
   const handleNego = useCallback(async()=> {
     const offer =  await createOffer()
     ws.send(JSON.stringify({
@@ -32,28 +28,33 @@ export default function VideoChat({ setVideoCall ,setCallfrom ,callfrom,ws,selec
   },[])
 
   useEffect(()=> {
-    connection.addEventListener('negotiationneeded',handleNego)
+   connection && connection.addEventListener('negotiationneeded',handleNego)
   },[connection])
 
 
 useEffect(() => {
   const streamData = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true }) ;
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio : true}) ;
+    let atrack  = stream.getAudioTracks()[0]
+    let vtrack = stream.getVideoTracks()[0]
+    setAudioTracks(atrack)
+    setVideoTracks(vtrack)
     localVideoRef.current.srcObject = stream;
     setVideo(stream)
-    for (const track of stream.getTracks()){
-      console.log('added tracks')
-      connection.addTrack(track,stream)
-      console.log(track)
-  }
+  //   for (const track of stream.getTracks()){
+  //     console.log('added tracks')
+  //     connection.addTrack(track,videoTracks)
+  //     console.log(track)
+  // }
+  connection.addTrack(vtrack,stream)
+  connection.addTrack(atrack,stream)
     
     }
     connection && streamData()
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => {
-          track.stop(); // Stop all tracks
-        });
+      if (videoTracks && audioTracks) {
+        videoTracks.stop()
+        audioTracks.stop()
         connection.close()
         
        
@@ -74,16 +75,44 @@ useEffect(() => {
  
 
   const endCall = () => {
+    if (videoTracks) {
+      videoTracks.stop();
+      setVideoTracks(null)
+    }
+    if (audioTracks) {
+      audioTracks.stop();
+      setAudioTracks(null)
+    }
     setVideoCall(false);
     setCallfrom(false);
-    
+   remoteVideoRef.current = null
     setVideo(null)
+    setConnection(null)
   ws.send(JSON.stringify({
         type : 'close',
         userTo : selected
       }))
     }
 
+    function handleVideo() {
+      if(videoTracks){
+        console.log(videoTracks.enabled)
+      videoTracks.enabled = !videoTracks.enabled;
+      setVideoTracks(videoTracks);
+    }
+    setVideoActive(!videoActive)
+    }
+    function handleAudio() {
+      if(audioTracks){
+      audioTracks.enabled = !audioTracks.enabled;
+      setAudioTracks(prevTrack => ({ ...prevTrack }));
+    }
+    setAudioActive(!audioActive)
+    }
+
+    useEffect(()=> {
+        callend && endCall()
+    },[callend])
 
   return (
      <> 
@@ -108,9 +137,9 @@ useEffect(() => {
       </div>
       <div className="controls w-full absolute bottom-6 ">
         <div className="button_wrapper w-1/3 mx-auto flex flex-row justify-around">
-          <div className="button p-4 h-16 w-16 rounded-full video bg-red-600">v</div>
-          <div className="button w-16 h-16 rounded-full p-4 audio bg-red-600">a</div>
-          <div className="button w-16 h-16 rounded-full p-4 end_call bg-red-500 cursor-pointer" onClick={endCall}><MdCallEnd /></div>
+          <div onClick={()=> handleVideo() } className={`button p-4 h-16 w-16 rounded-full video  cursor-pointer flex items-center justify-center ${videoActive ? 'bg-blue-500': 'bg-slate-500'}`} ><FaVideo className = 'text-2xl' /></div>
+          <div onClick={()=> handleAudio()}  className={`button w-16 h-16 rounded-full p-4 audio cursor-pointer flex items-center justify-center ${audioActive ? 'bg-blue-500': 'bg-slate-500'}`}><AiFillAudio className = 'text-2xl' /></div>
+          <div className="button w-16 h-16 rounded-full p-4 end_call bg-red-500 cursor-pointer flex items-center justify-center" onClick={endCall}><MdCallEnd className = 'text-2xl' /></div>
         </div>
       </div>
     </div>

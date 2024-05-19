@@ -5,7 +5,7 @@ import data from '@emoji-mart/data'
 import { userContext } from "@/providers/UserContextProvider";
 import VideoChat from "../videochat/videochat";
 import { init } from 'emoji-mart'
-
+import { ImAttachment } from "react-icons/im";
 
 
 import {
@@ -13,6 +13,7 @@ import {
   connectionContext,
   rtcContext,
 } from "@/providers/rtcProvider";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFaceSmile,
@@ -31,6 +32,9 @@ export default function Chatbox({
   messages,
   setCallfrom,
   ws,
+  callend,
+  setSmActive,
+  smactive
 }) {
   init({ data })
   const [message, setMessage] = useState("");
@@ -51,14 +55,31 @@ console.log(emoji)
 setMessage(message + emoji)
 }
 
+useEffect(()=> {
+  if(smactive){
+  let el = document.getElementById('ch_box')
+  if(el.classList.contains('active')){
+      el.classList.remove('active')
+  }
+  else {
+      el.classList.add('active')
+  }
+  }
+},[smactive])
+
  
   return (
-    <div className={` ${styles.chatbox}  w-full bg-[#F0F0F0] `}>
+    <div id="ch_box" className={` ${styles.chatbox} relative   w-full bg-[#F0F0F0] `}>
+
       {videocall || callfrom  ? (
-        <VideoChat setVideoCall={setVideoCall} ws={ws} selected={selected} callfrom={callfrom} setCallfrom={setCallfrom}></VideoChat>
+      <VideoChat callend={callend} setVideoCall={setVideoCall} ws={ws} selected={selected} callfrom={callfrom} setCallfrom={setCallfrom}></VideoChat>
       ) : (
         <>
           {" "}
+         {/* { smactive && (<div className="goback absolute top-0 left-0 bg-slate-200 p-2 hover:bg-slate-300" onClick={()=> {setSmActive(false)}
+            }>
+          <IoMdArrowRoundBack  className="text-2xl"/>
+          </div>)} */}
           <div className={` p-4 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
             {selected ? (
              
@@ -73,7 +94,7 @@ setMessage(message + emoji)
                     key={index}
                   >
                     <div
-                      className={`chat p-4 rounded-md mb-3 ${
+                      className={`${styles.chat} p-4 rounded-md mb-3 ${
                         val.senderId == id
                           ? "text-white bg-gradient-to-r from-blue-900 to-purple-800"
                           : "text-white bg-slate-400"
@@ -85,7 +106,7 @@ setMessage(message + emoji)
                 ))}
               </div>
             ) : (
-              <div className="nouserBox h-full w-full overflow-hidden ">
+              <div className={`${styles.nouserBox} h-full w-full overflow-hidden`}>
                 <Image className="mx-auto  " src={'/Designer.png'} alt="no image" width={350} height={350}></Image>
               <h1 className="text-center text-4xl font-bold overflow-y-hidden">
               Let  Bring the World closer with Unite
@@ -118,10 +139,19 @@ setMessage(message + emoji)
                   className="p-4 w-10/12 outline-none"
                   required
                 />
-                <div className="button w-3/12">
+                <div className={`${styles.sendBtn} w-3/12 flex flex-row`}>
                   {" "}
                   <button
-                    className="w-1/2 bg-white p-4"
+                  type="file"
+                    className="w-1/3 bg-white p-4"
+                    onClick={() => {
+                     
+                    }}
+                  >
+                    <ImAttachment className="text-slate-400" />
+                  </button>
+                  <button
+                    className="w-1/3 bg-white p-4"
                     onClick={() => {
                       setVideoCall(true);
                       videoChatTo();
@@ -132,7 +162,7 @@ setMessage(message + emoji)
                  
                  
                   <button
-                    className="bg-slate-900 text-white w-1/2 p-4 hover:bg-slate-800"
+                    className="bg-slate-900 text-white w-1/3 p-4 hover:bg-slate-800"
                     onClick={() => {
                       // channel.send(message)
                       handleSend(message, selected, setMessage);

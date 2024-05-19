@@ -1,3 +1,22 @@
 .brand_name {
     text-shadow: 2px 2px 2px black;
 }
+
+@media screen and (max-width:768px){
+   .logo img {
+       width: 50px;
+       height: 50px;
+    }
+    .wrapper {
+        font-size: .8rem;
+       padding-inline: 2rem;
+    }
+    .wrapper_right a {
+        padding: 6px;
+    }
+}
+/* @media screen and (max-width:500px){
+    .wrapper {
+        font-size: .8rem;
+    }
+} */
