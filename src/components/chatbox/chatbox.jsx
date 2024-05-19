@@ -55,17 +55,17 @@ console.log(emoji)
 setMessage(message + emoji)
 }
 
-useEffect(()=> {
-  if(smactive){
-  let el = document.getElementById('ch_box')
-  if(el.classList.contains('active')){
-      el.classList.remove('active')
-  }
-  else {
-      el.classList.add('active')
-  }
-  }
-},[smactive])
+// useEffect(()=> {
+//   if(smactive){
+//   let el = document.getElementById('ch_box')
+//   if(el.classList.contains('active')){
+//       el.classList.remove('active')
+//   }
+//   else {
+//       el.classList.add('active')
+//   }
+//   }
+// },[smactive])
 
  
   return (

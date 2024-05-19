@@ -25,7 +25,7 @@ export default function Chat() {
   const chatRef = useRef(null);
   const inputRef = useRef(null);
   const [smactive, setSmActive]= useState(false)
-  const [windowWidth, setWindowwidth] = useState(window.outerWidth)
+  
  
   
 
@@ -280,15 +280,6 @@ useEffect(()=> {
 },[])
 
 
-useEffect(()=> {
-    function handleSize() {
-      let w = window.innerWidth
-      console.log(w)
-      if (w <= 500) setSmActive(true)
-
-    }
-  handleSize()
-},[])
 
 
 

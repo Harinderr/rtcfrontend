@@ -45,18 +45,18 @@ export default function People({setSmActive,smactive, onlinePeople , setSelected
     },[id])
 
 let v = 1;
- useEffect(()=> {
-    if(!smactive ){
-    let el = document.getElementById('pp_con')
-    if(el.classList.contains('inactive')){
-        el.classList.remove('inactive')
-    }
-    else {
-        el.classList.add('inactive')
-    }
+//  useEffect(()=> {
+//     if(!smactive ){
+//     let el = document.getElementById('pp_con')
+//     if(el.classList.contains('inactive')){
+//         el.classList.remove('inactive')
+//     }
+//     else {
+//         el.classList.add('inactive')
+//     }
         
-    }
- },[smactive])
+//     }
+//  },[smactive])
 
 
 
