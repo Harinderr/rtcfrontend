@@ -25,7 +25,7 @@ export default function Chat() {
   const [callend, setCallEnd] = useState(false)
   const chatRef = useRef(null);
   const inputRef = useRef(null);
-  const [windowWidth,setWindowWidth] = useState(window.innerWidth)
+  const [windowWidth,setWindowWidth] = useState(0)
   const [active, setActive] = useState(false)
   const [selectedName, setSelectedName] =  useState('')
  
