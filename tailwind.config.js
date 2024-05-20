@@ -13,7 +13,13 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
           'bgImage' : "url('/socialapp/public/bg.png')"
       },
+      screens : {
+        'xs' : {'min':'300px','max':'500px'}
+
+      }
+     
     },
+
   
   },
   plugins: [],

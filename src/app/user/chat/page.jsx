@@ -8,7 +8,8 @@ import { userContext } from "@/providers/UserContextProvider";
 import axios from "@/utility/axios";
 import {  rtcContext } from "@/providers/rtcProvider";
 import { useRouter } from "next/navigation";
-
+import SmChatbox from "@/components/smChatBox/smchatbox";
+import SmPeople from "@/components/smpeople/smpeople";
 
 export default function Chat() {
   const [ws, setWs] = useState(null);
@@ -24,8 +25,10 @@ export default function Chat() {
   const [callend, setCallEnd] = useState(false)
   const chatRef = useRef(null);
   const inputRef = useRef(null);
-  const [smactive, setSmActive]= useState(false)
-  
+  const [windowWidth,setWindowWidth] = useState(window.innerWidth)
+  const [active, setActive] = useState(false)
+  const [selectedName, setSelectedName] =  useState('')
+ 
  
   
 
@@ -280,6 +283,27 @@ useEffect(()=> {
 },[])
 
 
+function debounce(func,delay) {
+  let timer;
+  return function() {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+          func.apply(this,arguments)
+      },delay);
+  }
+}
+
+
+
+function handlesize () {
+ let w = window.innerWidth
+setWindowWidth(w)
+}
+const df = debounce(handlesize,1000)
+
+window.onresize = df
+
+
 
 
 
@@ -304,17 +328,17 @@ useEffect(()=> {
       </div>
 
       <div className="flex flex-row overflow-hidden ">
+       { windowWidth >= 500 ? (
+       <>
        <People
         onlinePeople={onlinePeople}
         messages={messages}
         setSelected={setSelected}
         selected={selected}
-        setSmActive={setSmActive}
-        smactive={smactive}
+     
       ></People>
         <Chatbox
-        smactive={smactive}
-        setSmActive={setSmActive}
+        
         setCallfrom={setCallfrom}
          videoChatTo={videoChatTo}
           handleSend={handleSend}
@@ -327,6 +351,39 @@ useEffect(()=> {
           ws = {ws}
           callend={callend}
         ></Chatbox>
+        </>) :
+        (
+          <>
+          <SmPeople
+        onlinePeople={onlinePeople}
+        messages={messages}
+        setSelected={setSelected}
+        selected={selected}
+       active = {active}
+       setActive={setActive}
+       windowWidth={windowWidth}
+       setSelectedName={setSelectedName}
+      ></SmPeople>
+        <SmChatbox
+        onlinePeople={onlinePeople}
+        selectedName={selectedName}
+         windowWidth={windowWidth}
+       active={active}
+       setActive={setActive}
+        setCallfrom={setCallfrom}
+         videoChatTo={videoChatTo}
+          handleSend={handleSend}
+          selected={selected}
+          messages={messages}
+          chatRef={chatRef}
+          inputRef={inputRef}
+          connection={connection}
+          callfrom={callfrom}
+          ws = {ws}
+          callend={callend}
+        ></SmChatbox>
+  </>
+        )}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { rtcContext } from "@/providers/rtcProvider";
 import { MdCallEnd } from "react-icons/md";
 import { FaVideo } from "react-icons/fa6";
 import { AiFillAudio } from "react-icons/ai";
-
+import styles from './videochat.module.css'
 export default function VideoChat({ callend,setVideoCall ,setCallfrom ,callfrom,ws,selected}) {
 
   const { connection,channel,createOffer, stream ,setConnection} = useContext(rtcContext);
@@ -119,21 +119,23 @@ useEffect(() => {
      {/* <input type="text" name="msg" className="w-full" onChange={(e)=> setText(e.target.value)} /> */}
       {/* <button onClick={sendStream}>Send</button> */}
     <div id="video" className="main bg-slate-700 h-full w-full relative">
-      <div className="container flex flex-row w-full h-full">
+      <div className={`${styles.video_chat} flex flex-row w-full h-full`}>
        
-          <video
+           <video
             id="localVideo"
-            className="h-full w-1/2"
+            className="h-1/2 w-full"
             ref={localVideoRef}
             autoPlay
           />
        
         <video
           id="remoteVideo"
-          className="h-full w-1/2"
+          className="h-1/2 w-full"
           ref={remoteVideoRef}
           autoPlay
-        />
+        /> 
+
+      
       </div>
       <div className="controls w-full absolute bottom-6 ">
         <div className="button_wrapper w-1/3 mx-auto flex flex-row justify-around">

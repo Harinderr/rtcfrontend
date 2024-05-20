@@ -2,10 +2,10 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import styles from './people.module.css'
+import styles from './smpeople.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import axios  from "@/utility/axios";
-export default function People({ onlinePeople , setSelected ,selected}) {
+export default function SmPeople({windowWidth,active,setActive , setSelected ,selected,setSelectedName}) {
     const {id}= useContext(userContext)
     const [friends, setFriends] = useState([])
     const [store, setStore] = useState([])
@@ -46,6 +46,17 @@ export default function People({ onlinePeople , setSelected ,selected}) {
 
 let v = 1;
 
+useEffect(()=> {
+    let el = document.getElementById('pp_con')
+    if(windowWidth < 500) {
+        if (active){ 
+            el.style.display = 'none'}
+     else{
+      el.style.display = 'block'
+     }
+      }
+    
+},[active])
 
 
 
@@ -80,19 +91,20 @@ let v = 1;
                                 key={v++}
                                 onClick={() => {
                                     setSelected(val.userid)
-                                   
+                                    setSelectedName(val.username)
+                                   windowWidth < 500 && setActive(true)
                                     
                                 }}
-                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
+                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 `}
                                 
                             >
                                 <img
                                     src="https://via.placeholder.com/30"
                                     alt="User Profile"
-                                    className="w-8 h-8 rounded-full mr-2"
+                                    className="w-10 h-10 rounded-full mr-2"
                                 />
-                                <span className={`inline-block w-2 h-2 ${onlinePeople.has(val.userid) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
-                              <div className="flex flex-col">
+                                
+                              <div className="flex flex-col ml-2">
                               <span className="font-semibold text-lg">{val.username}</span>
                               <span className=" text-xs overflow-hidden">{val.latestMsg.length ? val.latestMsg.substring(0,20)+'...':''}</span>
 

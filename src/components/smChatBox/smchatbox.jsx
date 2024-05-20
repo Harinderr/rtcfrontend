@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import styles from "./chat.module.css";
+import styles from './chat.module.css'
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import { userContext } from "@/providers/UserContextProvider";
@@ -22,7 +22,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-export default function Chatbox({
+export default function SmChatbox({
  
   callfrom,
   videoChatTo,
@@ -34,7 +34,11 @@ export default function Chatbox({
   setCallfrom,
   ws,
   callend,
-  
+  active,
+  setActive,
+ windowWidth,
+ selectedName,
+ onlinePeople
   
 }) {
   init({ data })
@@ -56,7 +60,17 @@ console.log(emoji)
 setMessage(message + emoji)
 }
 
+useEffect(()=> {
+  let el  = document.getElementById('ch_box')
+  if(windowWidth < 500) {
+    if (active)
+      { el.style.display = 'block'}
+ else{
+  el.style.display = 'none'
+ }
+  }
 
+},[active])
 
 
  
@@ -68,7 +82,17 @@ setMessage(message + emoji)
       ) : (
         <>
           {" "}
-        
+          <div className="chat_with flex flex-row   items-center absolute top-0 left-0 w-full bg-slate-200 p-3 shadow-md hover:bg-slate-300">
+          <div className="mr-4" 
+          onClick={()=> setActive(false)}
+          >
+          <IoMdArrowRoundBack  className="text-2xl"/>
+          </div>
+          <span className={`inline-block  w-2 h-2 ${onlinePeople.has(selected) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
+          <div className="name font-bold text-xl">{selectedName}</div>
+
+          </div>
+         
           <div className={` p-4 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
             {selected ? (
              
