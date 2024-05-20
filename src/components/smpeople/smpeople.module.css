@@ -41,6 +41,15 @@ padding: 8px;
     width: 30px;
 }
 
+.friendsList li {
+    padding: 16px;
+    
+
+}
+.friendsList li .user {
+    font-size: 20px;
+}
+
 
 }
 

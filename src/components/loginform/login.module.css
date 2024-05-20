@@ -1,0 +1,10 @@
+
+@media screen and (max-width : 768px) {
+    .welcom_box {
+        display: none;
+    }
+    .login_box {
+        width: 80%;
+        margin-inline: auto;
+    }
+}

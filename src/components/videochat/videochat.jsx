@@ -88,6 +88,7 @@ useEffect(() => {
    remoteVideoRef.current = null
     setVideo(null)
     setConnection(null)
+    window.location.reload();
   ws.send(JSON.stringify({
         type : 'close',
         userTo : selected
@@ -111,7 +112,7 @@ useEffect(() => {
     }
 
     useEffect(()=> {
-        callend && endCall()
+        callend && typeof window !== 'undefined' && endCall()
     },[callend])
 
   return (
@@ -138,7 +139,7 @@ useEffect(() => {
       
       </div>
       <div className="controls w-full absolute bottom-6 ">
-        <div className="button_wrapper w-1/3 mx-auto flex flex-row justify-around">
+        <div className={`${styles.button_wrapper} w-1/3 mx-auto flex flex-row justify-around`}>
           <div onClick={()=> handleVideo() } className={`button p-4 h-16 w-16 rounded-full video  cursor-pointer flex items-center justify-center ${videoActive ? 'bg-blue-500': 'bg-slate-500'}`} ><FaVideo className = 'text-2xl' /></div>
           <div onClick={()=> handleAudio()}  className={`button w-16 h-16 rounded-full p-4 audio cursor-pointer flex items-center justify-center ${audioActive ? 'bg-blue-500': 'bg-slate-500'}`}><AiFillAudio className = 'text-2xl' /></div>
           <div className="button w-16 h-16 rounded-full p-4 end_call bg-red-500 cursor-pointer flex items-center justify-center" onClick={endCall}><MdCallEnd className = 'text-2xl' /></div>

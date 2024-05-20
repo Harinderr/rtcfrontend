@@ -51,15 +51,16 @@
      }
 }
 
+
 @media screen and (max-width:500px){
- 
-     .chatbox {
-          display: none;
+     
+     .chat {
+          font-size: 18px;
      }
-
-
-
-}
+     
+     
+     }
+     
 
 
 
