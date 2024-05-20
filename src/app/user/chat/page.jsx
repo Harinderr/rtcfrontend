@@ -282,30 +282,34 @@ useEffect(()=> {
   
 },[])
 
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    // setWindowWidth(window.innerWidth);
 
-function debounce(func,delay) {
-  let timer;
-  return function() {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-          func.apply(this,arguments)
-      },delay);
+    // Debounce function for window resize
+    function debounce(func, delay) {
+      let timer;
+      return function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, arguments);
+        }, delay);
+      };
+    }
+
+    // Handle window resize
+    function handleSize() {
+      setWindowWidth(window.innerWidth);
+      console.log(window.innerWidth)
+    }
+    const debounceHandleSize = debounce(handleSize, 1000);
+    window.addEventListener('resize', debounceHandleSize);
+
+    return () => {
+      window.removeEventListener('resize', debounceHandleSize);
+    };
   }
-}
-
-
-
-function handlesize () {
- let w = window.innerWidth
-setWindowWidth(w)
-}
-const df = debounce(handlesize,1000)
-
-window.onresize = df
-
-
-
-
+}, []);
 
   return (
     <div className="relative"  >

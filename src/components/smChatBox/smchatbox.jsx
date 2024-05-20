@@ -93,7 +93,7 @@ useEffect(()=> {
 
           </div>
          
-          <div className={` p-4 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
+          <div className={` p-4 mt-10 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
             {selected ? (
              
                 
