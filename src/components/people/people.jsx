@@ -94,7 +94,7 @@ let v = 1;
                                 <span className={`inline-block w-2 h-2 ${onlinePeople.has(val.userid) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
                               <div className="flex flex-col">
                               <span className="font-semibold text-lg">{val.username}</span>
-                              {/* <span className=" text-xs overflow-hidden">{val.latestMsg && val.latestMsg.length  ? val.latestMsg.substring(0,20)+'...':''}</span> */}
+                              <span className=" text-xs overflow-hidden">{  val.latestMsg  ? val.latestMsg.substring(0,20)+'...':''}</span>
 
                                 </div>  
                                
