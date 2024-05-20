@@ -106,7 +106,7 @@ useEffect(()=> {
                                 
                               <div className="flex flex-col ml-2">
                               <span className="font-semibold text-lg">{val.username}</span>
-                              <span className=" text-xs overflow-hidden">{val.latestMsg.length ? val.latestMsg.substring(0,20)+'...':''}</span>
+                              <span className=" text-xs overflow-hidden">{val.latestMsg && val.latestMsg.length ? val.latestMsg.substring(0,20)+'...':''}</span>
 
                                 </div>  
                                
