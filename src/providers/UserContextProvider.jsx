@@ -29,7 +29,7 @@ export default function UserContextProvider({children}) {
     },[id,name])
   
     return (
-        <userContext.Provider value={{setId,id, name,setName,authenticated}}>
+        <userContext.Provider value={{setId,id, name,setName,authenticated,setAuthenticated}}>
             {children}
         </userContext.Provider>
     )

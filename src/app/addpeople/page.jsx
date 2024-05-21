@@ -42,7 +42,7 @@ export default function Addpeople() {
     }, [search])
 
     return (
-        <div className="container h-screen bg-gray-900 flex flex-col items-center py-10">
+        <div className="h-screen bg-gray-900 flex flex-col items-center py-10 px-10">
             <div className="wrapper w-full max-w-lg rounded-full flex items-center bg-white shadow-lg">
                 <input
                     type="text"

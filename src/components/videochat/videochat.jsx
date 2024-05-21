@@ -106,7 +106,7 @@ useEffect(() => {
     function handleAudio() {
       if(audioTracks){
       audioTracks.enabled = !audioTracks.enabled;
-      setAudioTracks(prevTrack => ({ ...prevTrack }));
+      setAudioTracks(audioTracks);
     }
     setAudioActive(!audioActive)
     }

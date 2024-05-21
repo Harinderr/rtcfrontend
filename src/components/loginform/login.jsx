@@ -1,6 +1,6 @@
 'use client'
 import { signIn } from "next-auth/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "@/utility/axios";
 import styles from './login.module.css'
 import { userContext } from "@/providers/UserContextProvider";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function LogIn() {
     const [formdata, setFormdata] = useState({});
-    const { setName, setId } = useContext(userContext);
+    const { setName, setId ,id} = useContext(userContext);
     const router = useRouter();
 
     function handleChange(e) {
@@ -32,6 +32,11 @@ export default function LogIn() {
             console.log('there is an error: ' + err);
         }
     }
+
+    useEffect(()=> {
+        id && router.push('/user/chat')
+        
+    },[])
 
     return (
        
