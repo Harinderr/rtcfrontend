@@ -33,7 +33,7 @@ export default function People({ onlinePeople , setSelected ,selected}) {
              console.log(res.data)
                  setFriends(res.data)
                  setStore(res.data)
-               
+               console.log(res.data)
                
             }catch(err){
                 console.log('cant get friends data from db',err)
@@ -94,7 +94,7 @@ let v = 1;
                                 <span className={`inline-block w-2 h-2 ${onlinePeople.has(val.userid) ? 'bg-green-600': 'bg-red-600'}  rounded-full mr-2`}></span>
                               <div className="flex flex-col">
                               <span className="font-semibold text-lg">{val.username}</span>
-                              <span className=" text-xs overflow-hidden">{  val?.latestMsg  ? val.latestMsg.substring(0,20)+'...':''}</span>
+                              <span className=" text-xs overflow-hidden">{  val.latestMsg  ? val.latestMsg.substring(0,20)+'...':''}</span>
 
                                 </div>  
                                
