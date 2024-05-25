@@ -1,4 +1,12 @@
 
+.login_box input {
+   outline: none;
+   background-color: white;
+}
+.login_box input:focus {
+    outline: 3px solid rgb(118, 118, 245);
+}
+
 @media screen and (max-width : 768px) {
     .welcom_box {
         display: none;
