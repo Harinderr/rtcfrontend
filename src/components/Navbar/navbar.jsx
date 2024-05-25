@@ -8,16 +8,17 @@ import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
 export default function Navbar() {
-    const { name} = useContext(userContext)
+    const { name,authenticated} = useContext(userContext)
+    
     const router = useRouter()
 
     return (
         <div className={`${styles.wrapper} w-full shadow-md bg-slate-800 flex flex-row justify-between px-20 py-2`}>
         <div className={`${styles.logo} flex items-center`}>
-          <img src="/Designer.png" alt="Logo" className="h-14 w-14 mr-2" />
-          <div className= {`${styles.brand_name} text-white text-lg font-bold`}>Unite</div>
+       
+          <div className= {`${styles.brand_name} text-2xl p-2 font-bold text-white`}>UNI<span className='text-yellow-500'>TE</span></div>
         </div>
-        <div className={`${styles.wrapper_right} flex items-center`}>
+     { authenticated &&   <div className={`${styles.wrapper_right} flex items-center`}>
           <Link href={'/addpeople'} className='py-2 px-4 rounded-md text-white border-solid border-2 border-white hover:bg-white hover:text-blue-900'>Add</Link>
           <div className="flex items-center ml-4">
             <div className="text-white mr-4">{name}</div>
@@ -28,7 +29,7 @@ export default function Navbar() {
               </svg>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
       
     

@@ -6,7 +6,7 @@ import axios from "@/utility/axios"
 import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
-    const { id, name, setId, setName } = useContext(userContext)
+    const { id, name, setId, setName,setAuthenticated } = useContext(userContext)
     const router = useRouter()
     const firstletter = name ? name.substring(0, 1).toUpperCase() : 'R'
 
@@ -17,6 +17,7 @@ export default function Dashboard() {
                 console.log('logout success')
                 setId(null)
                 setName(null)
+                setAuthenticated(false)
                 router.push('/')
             }
         } catch (error) {

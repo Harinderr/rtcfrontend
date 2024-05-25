@@ -117,9 +117,7 @@ useEffect(() => {
 
   return (
      <> 
-     {/* <input type="text" name="msg" className="w-full" onChange={(e)=> setText(e.target.value)} /> */}
-      {/* <button onClick={sendStream}>Send</button> */}
-    <div id="video" className="main bg-slate-700 h-full w-full relative">
+      <div id="video" className="main bg-slate-700 h-full w-full relative">
       <div className={`${styles.video_chat} flex flex-row w-full h-full`}>
        
            <video

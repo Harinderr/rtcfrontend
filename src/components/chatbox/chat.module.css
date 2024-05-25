@@ -1,7 +1,11 @@
 
 .chatbox {
      height:  calc(100vh - 76px);
-     
+     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+     url('/nt.jpg');
+}
+.chat_input {
+     border-radius: 10px;
 }
 
 @media screen and (max-width:981px) {

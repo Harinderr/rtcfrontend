@@ -8,10 +8,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
-    font-family:  var(--font-roboto_slab);
+    font-family:  var(--font-changa);
+  
  }
-
+ body {
+  overflow-x: hidden;
+ 
+ }
 
 
  /* * width */ 

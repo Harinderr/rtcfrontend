@@ -61,7 +61,7 @@ setMessage(message + emoji)
 
  
   return (
-    <div id="ch_box" className={` ${styles.chatbox} relative   w-full bg-[#F0F0F0]  `}>
+    <div  id="ch_box"  className={` ${styles.chatbox} relative   w-full  `}>
 
       {videocall || callfrom  ? (
       <VideoChat callend={callend} setVideoCall={setVideoCall} ws={ws} selected={selected} callfrom={callfrom} setCallfrom={setCallfrom}></VideoChat>
@@ -69,7 +69,7 @@ setMessage(message + emoji)
         <>
           {" "}
         
-          <div className={` p-4 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
+          <div   className={`${styles.chat_wrapper} p-4 w-full h-5/6 overflow-y-scroll`} ref={chatRef}>
             {selected ? (
              
                 
@@ -97,7 +97,7 @@ setMessage(message + emoji)
             ) : (
               <div className={`${styles.nouserBox} h-full w-full overflow-hidden`}>
                 <Image className="mx-auto  " src={'/Designer.png'} alt="no image" width={350} height={350}></Image>
-              <h1 className="text-center text-4xl font-bold overflow-y-hidden">
+              <h1 className="text-center text-white text-4xl font-bold overflow-y-hidden">
               Let  Bring the World closer with Unite
               </h1>
               </div>
@@ -105,13 +105,13 @@ setMessage(message + emoji)
           </div>
           {selected && (
         
-            <div className={`${styles.wrapper_input} mb-5 relative overflow-visible`}>
+            <div className={`${styles.wrapper_input} mb-5 relative `}>
              <div className="picker absolute -top-96 right-4"> {emojiPickerVisible && (
                 <Picker data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={handleEmoji}  className='' />
              )}
              </div> 
                         <div
-                className={`${styles.chat_input}  w-3/4 mx-auto rounded-md flex flex-row`}
+                className={`${styles.chat_input}  w-3/4 mx-auto  rounded-md flex flex-row`}
                 ref={inputRef}
               >
                  <button className=" bg-white  p-4"
@@ -151,11 +151,11 @@ setMessage(message + emoji)
                  
                  
                   <button
-                    className="bg-slate-900 text-white w-1/3 p-4 hover:bg-slate-800"
+                    className="bg-slate-600 text-white w-1/3 p-4 hover:bg-slate-800"
                     onClick={() => {
                       // channel.send(message)
                       handleSend(message, selected, setMessage);
-                      setEmojiPickerVisible(!emojiPickerVisible)
+                      setEmojiPickerVisible(false)
                     }}
                   >
                     {" "}

@@ -40,9 +40,9 @@ export default function LogIn() {
 
     return (
        
-        <div className="flex justify-center   bg-blue-100">
-            
-        <div  className={` ${styles.login_box} p-10 rounded-lg shadow-2xl mt-8 w-2/5 mb-10  h-auto`}>
+        <div className="flex justify-center h-screen  bg-blue-100">
+            <div className="login_wrapper flex flex-row h-fit">
+        <div  className={` ${styles.login_box} p-10 w-1/2 rounded-lg shadow-2xl mt-8   mb-10  h-auto`}>
             <div className="text-2xl  font-bold text-gray-800 mb-4 text-center">Login</div>
             <form className="space-y-6">
                  <div>
@@ -81,10 +81,11 @@ export default function LogIn() {
             </div> 
            
         </div>
-        <div  style={{backgroundImage: "url('/nt.jpg')"}} className={`${styles.welcom_box}  w-2/5  mt-8 mb-10 py-24 px-10`}>
+        <div  style={{backgroundImage: "url('/nt.jpg')"}} className={`${styles.welcom_box}  w-1/2  mt-8 mb-10 py-24 px-10`}>
             <h1 className="text-5xl font-bold  leading-snug text-white text-center">Welcome back to SignIn</h1>
             <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences</p>
            
+        </div>
         </div>
     </div>
     

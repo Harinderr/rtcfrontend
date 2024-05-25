@@ -83,7 +83,7 @@ let v = 1;
                                    
                                     
                                 }}
-                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' border-l-8 border-lime-500 bg-slate-600 ' : ''}`}
+                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' bg-slate-500 border-l-8 border-lime-500  ' : ''}`}
                                 
                             >
                                 <img
