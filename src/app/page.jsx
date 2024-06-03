@@ -1,7 +1,7 @@
 'use client'
 
 import { userContext } from "@/providers/UserContextProvider"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useContext, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -10,6 +10,8 @@ import Link from "next/link"
 
 
   export default function Home() {
+    const searchParams = useSearchParams()
+    const token = searchParams.get('token')
     const {id,name} = useContext(userContext)
     const router = useRouter()
   
@@ -19,15 +21,18 @@ import Link from "next/link"
       {id && router.push('/user/chat')}
     },[id])
   
+    useEffect(()=> {
     
+      console.log(token)
+    },[])
   
   return (
     <div className="home_wrapper w-full flex flex-row">
-    <div className="left w-1/2 bg-gradient-to-r from-blue-900 to-blue-700 flex flex-col justify-center items-center">
+    <div className="home_left w-1/2 bg-gradient-to-r from-blue-900 to-blue-700 flex flex-col justify-center items-center">
       <h1 className="text-5xl font-bold px-8  leading-snug text-white text-center">Welcome to Unite</h1>
       <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Connect with friends and make new ones on Messenger, the ultimate social platform.</p>
     </div>
-    <div className="right w-1/2 relative">
+    <div className="home_right w-1/2 relative">
       <div className="bg-cover bg-center h-full" style={{backgroundImage: "url('/nt.jpg')"}}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white">

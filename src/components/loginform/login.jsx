@@ -5,6 +5,7 @@ import axios from "@/utility/axios";
 import styles from './login.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LogIn() {
     const [formdata, setFormdata] = useState({});
@@ -15,6 +16,7 @@ export default function LogIn() {
         const { name, value } = e.target;
         setFormdata({ ...formdata, [name]: value });
     }
+  
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -73,17 +75,12 @@ export default function LogIn() {
                 </div>
                 <button type="submit" className="block  w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out  hover:bg-white hover:text-black" onClick={(e) => handleSubmit(e)}>Sign In </button>
             </form>
-             <div className="text-center mt-4">
-                <span className="text-gray-600">OR</span>
-            </div>
-             <div onClick={() => signIn('google')} className="block mt-4 text-center w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-white hover:text-black cursor-pointer ">
-                Sign In with Google
-            </div> 
+           
            
         </div>
         <div  style={{backgroundImage: "url('/nt.jpg')"}} className={`${styles.welcom_box}  w-1/2  mt-8 mb-10 py-24 px-10`}>
             <h1 className="text-5xl font-bold  leading-snug text-white text-center">Welcome back to SignIn</h1>
-            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences</p>
+            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences <Link href={'/auth/register'} className="text-blue-500 cursor-pointer">Go to Register</Link></p>
            
         </div>
         </div>

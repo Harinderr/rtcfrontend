@@ -45,7 +45,7 @@ export default function Chat() {
 
   //websocket
   function connnectToWs() {
-    const ws = new WebSocket("wss://witty-graceful-winterberry.glitch.me");
+    const ws = new WebSocket("ws://localhost:5000");
 
     setWs(ws);
 

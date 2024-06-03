@@ -1,5 +1,6 @@
 'use client'
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import axios from '@/utility/axios';
 import styles from './register.module.css'
@@ -83,12 +84,11 @@ export default function Signup() {
             </div> */}
            
         </div>
-        <div style={{backgroundImage: "url('/nt.jpg')"}} className={`${styles.welcom_box}  w-1/2  mt-8 mb-10 py-16 px-10`}>
+        <div style={{backgroundImage: "url('/nt.jpg')"}} className={`${styles.welcom_box}  w-1/2  mt-8 mb-10 py-16 px-10 flex justify-center align-middle `}>
+            <div className="wrapper flex self-center flex-col ">
             <h1 className="text-5xl font-bold px-8  leading-snug text-white text-center">Welcome to SignUp</h1>
-            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences</p>
-            <div onClick={() => signIn('google')} className="block mt-16 text-center w-full bg-white text-black font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-black hover:text-white cursor-pointer ">
-                Sign up with Google
-            </div> 
+            <p className="px-10 mt-4 leading-normal text-white font-normal text-center">Chat with your Friends, enjoy and share your experiences  <Link href={'/auth/login'} className="text-blue-500 cursor-pointer">Go to Login</Link></p>
+            </div>
         </div>
     </div></div>
     
