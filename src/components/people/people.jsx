@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from './people.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import axios  from "@/utility/axios";
@@ -73,7 +74,7 @@ let v = 1;
         {/* <div className="font-bold mb-4 ml-4">Contacts</div> */}
         <ul className={`${styles.friendsList}`}>
            
-                  {
+                  {  friends.length ? (
                     friends.map((val,index)=> {
                         return (
                             <li
@@ -83,7 +84,7 @@ let v = 1;
                                    
                                     
                                 }}
-                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' bg-slate-500 border-l-8 border-lime-500  ' : ''}`}
+                                className={`flex items-center py-3 px-2  cursor-pointer bg-slate-800 hover:bg-slate-700 ${selected == val.userid ? ' bg-slate-700 border-l-8 border-lime-500  ' : ''}`}
                                 
                             >
                                 <img
@@ -100,7 +101,14 @@ let v = 1;
                                
                             </li>
                         )
-                    })
+                    })): (
+                        <div className="w-full h-1/2 ">
+                            <div className="wr h-full flex flex-col justify-center items-center">
+                            <p className="text-xl">No Friends</p>
+                         <Link href={'/addpeople'} className='text-blue-600'>Add friends</Link>
+                        </div>
+                        </div>
+                    )
                   }
                 
         </ul>

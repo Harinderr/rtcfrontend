@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation";
 import axios from '@/utility/axios';
-const { createContext, useState, useEffect } = require("react");
+const { createContext, useState, useEffect, useCallback } = require("react");
 
 export  const userContext = createContext()
 
@@ -10,23 +10,23 @@ export default function UserContextProvider({children}) {
     const [name, setName] = useState('');
     const [authenticated, setAuthenticated] = useState(false)
     
- 
+    const profile = useCallback(async () => {
+       try {
+         const response = await axios.get('/user')
+        // console.log(response)
+        setName(response.data.username)
+        setId(response.data.userid)
+        if(response.data.username){
+            setAuthenticated(true)
+        }}
+        catch(error){
+            console.log('no one logged in ')
+        }
+    },[])
    
     useEffect( ()=> {
-        const profile = async () => {
-            const response = await axios.get('/user')
-            // console.log(response)
-            setName(response.data.username)
-            setId(response.data.userid)
-            if(response.data.username){
-                setAuthenticated(true)
-            }
-        }
-    
-   profile()
-   
-   
-    },[id,name])
+         profile() 
+       },[id, name])
   
     return (
         <userContext.Provider value={{setId,id, name,setName,authenticated,setAuthenticated}}>

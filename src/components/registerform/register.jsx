@@ -6,11 +6,14 @@ import axios from '@/utility/axios';
 import styles from './register.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 export default function Signup() {
     
     const [formdata, setFormdata] = useState({})
    const {setName, setId} = useContext(userContext)
+   const [loading, setLoading] = useState(false)
+   const [res, setRes] = useState('')
    const router = useRouter()
     function handleChange(e) {
         const {name, value} = e.target
@@ -20,20 +23,28 @@ export default function Signup() {
     async function handleSubmit(e) {
         e.preventDefault();
          try {
+            setLoading(true)
             let response = await axios.post('/register',formdata)
             setId(response.data.userid)
             setName(response.data.username)
+            setLoading(false)
             router.push('/')
 
          }
           catch (err) {
-            console.log('there is an erro' + err)
+            if (err.response) {
+                setRes(err.response.data.result || 'An error occurred');
+            } else {
+                setRes('An unexpected error occurred');
+            }
+            setLoading(false)
          }
     }
+
     return (
 
        
-        <div className="flex justify-center h-screen   bg-blue-100">
+        <div className="flex justify-center h-fit   bg-blue-100">
             <div className="register_wrapper flex flow-row h-fit">
         <div  className= {`${styles.register_box} p-10 rounded-lg shadow-2xl mt-8 w-1/2 mb-10 overflow-hidden h-auto`}>
             <div className="text-2xl  font-bold text-gray-800 mb-4 text-center">Register</div>
@@ -77,7 +88,12 @@ export default function Signup() {
                         placeholder="Enter your password..." 
                     />
                 </div>
-                <button type="submit" className="block  w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-600" onClick={(e) => handleSubmit(e)}>Sign Up </button>
+                <button type="submit" disabled={loading} className="flex flex-row  w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out  hover:bg-white hover:text-black" onClick={(e) => handleSubmit(e)}> 
+                    {loading && <Loader></Loader>
+                    }
+                    <p className="mx-auto">Sign Up</p>  </button>
+                    {res && <p className="text-red-600">{res}</p>
+                    }
             </form>
             {/* /* <div className="text-center mt-4">
                 <span className="text-gray-600">OR</span>

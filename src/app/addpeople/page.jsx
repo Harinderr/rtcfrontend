@@ -10,25 +10,33 @@ import { IoSearchOutline } from "react-icons/io5"
 export default function Addpeople() {
     const [search, setSearch] = useState('')
     const [data, setData] = useState([])
-    const [click, setClick] = useState('')
+    const [msg, setmsg]= useState(false)
+    
     const { id } = useContext(userContext)
 
     const handleChange = (e) => {
         setSearch(e.target.value)
     }
+    
+    const handleClick = () => {
+        setmsg(false)
+    }
+  
 
     const fetchData = async () => {
         try {
             const response = await axios.post('/addpeople', { data: search, userid: id })
             setData(response.data)
+           
         } catch (err) {
             console.log('There is an error:', err)
         }
     }
 
-    const addFriend = async () => {
+    const addFriend = async (fd) => {
         try {
-            await axios.post('/add', { userid: id, friendId: click })
+         const res  =   await axios.post('/add', { userid: id, friendId: fd })
+         setmsg(true)
         } catch (err) {
             console.log(`Can't fetch data:`, err)
         }
@@ -41,8 +49,20 @@ export default function Addpeople() {
         return () => clearTimeout(timer)
     }, [search])
 
+    useEffect(() => {
+        const fetchFriends = async () => {
+            const friends = await axios.post('/friends', {userId : id})
+            console.log(friends)
+        }
+        fetchFriends()
+    },[])
+   
     return (
-        <div className="h-screen bg-gray-900 flex flex-col items-center py-10 px-10">
+        <div className="h-screen relative bg-gray-900 flex flex-col items-center py-10 px-10">
+         { msg &&   <div id="msg_box" className="msg absolute flex flex-row justify-between top-10 right-10 h-16 w-48 p-4 rounded-lg bg-green-500 text-white">
+                <p>User added as friend</p>
+                <div className="text-black cursor-pointer" onClick={handleClick}>Cut</div>
+            </div>}
             <div className="wrapper w-full max-w-lg rounded-full flex items-center bg-white shadow-lg">
                 <input
                     type="text"
@@ -59,8 +79,8 @@ export default function Addpeople() {
                 </div>
             </div>
 
-            {search.length !== 0 ? (
-                <div className="results w-full max-w-lg mt-5">
+            {
+                <div className="results w-full max-w-lg mt-5 overflow-y-scroll">
                     {data.map((val, index) => (
                         <div
                             key={index}
@@ -76,16 +96,13 @@ export default function Addpeople() {
                                 icon={faPlus}
                                 className="hover:text-blue-500 cursor-pointer"
                                 onClick={() => {
-                                    setClick(val.id)
-                                    addFriend()
+                                addFriend(val.id)
                                 }}
                             />
                         </div>
                     ))}
                 </div>
-            ) : (
-                <div className="text-center text-2xl text-white mt-10">Search to get results</div>
-            )}
+            }
         </div>
     )
 }

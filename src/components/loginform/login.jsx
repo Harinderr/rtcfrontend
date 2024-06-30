@@ -6,10 +6,13 @@ import styles from './login.module.css'
 import { userContext } from "@/providers/UserContextProvider";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Loader } from "lucide-react";
 
 export default function LogIn() {
     const [formdata, setFormdata] = useState({});
     const { setName, setId ,id} = useContext(userContext);
+    const [loading, setLoading] = useState(false)
+    const [res, setres] = useState('')
     const router = useRouter();
 
     function handleChange(e) {
@@ -21,17 +24,24 @@ export default function LogIn() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
+            setLoading(true)
             let response = await axios.post('/login', formdata);
             if (response.status === 200) {
-                console.log(response);
                 setId(response.data.userid);
                 setName(response.data.username);
+                setLoading(false)
                 router.push('/user/chat');
             } else {
-                console.log('error in fetching data');
+               setres(response.data.result)
+               setLoading(false)
             }
         } catch (err) {
-            console.log('there is an error: ' + err);
+            if (err.response) {
+                setres(err.response.data.result || 'An error occurred');
+            } else {
+                setres('An unexpected error occurred');
+            }
+            setLoading(false)
         }
     }
 
@@ -43,7 +53,7 @@ export default function LogIn() {
     return (
        
         <div className="flex justify-center h-screen  bg-blue-100">
-            <div className="login_wrapper flex flex-row h-fit">
+         <div className="login_wrapper flex flex-row h-fit">
         <div  className={` ${styles.login_box} p-10 w-1/2 rounded-lg shadow-2xl mt-8   mb-10  h-auto`}>
             <div className="text-2xl  font-bold text-gray-800 mb-4 text-center">Login</div>
             <form className="space-y-6">
@@ -73,7 +83,12 @@ export default function LogIn() {
                         placeholder="Enter your password..." 
                     />
                 </div>
-                <button type="submit" className="block  w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out  hover:bg-white hover:text-black" onClick={(e) => handleSubmit(e)}>Sign In </button>
+                <button type="submit" disabled={loading} className="flex flex-row  w-full bg-black text-white font-semibold px-6 py-4 rounded-md transition duration-300 ease-in-out  hover:bg-white hover:text-black" onClick={(e) => handleSubmit(e)}> 
+                    {loading && <Loader></Loader>
+                    }
+                    <p className="mx-auto">Sign In</p>  </button>
+                    {res && <p className="text-red-600">{res}</p>
+                    }
             </form>
            
            
